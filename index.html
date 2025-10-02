@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kerala Election Demo 2025 (GitHub Ready)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .voting-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .info-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 20px;
+        }
+
+        .party {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .party:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-color: #007bff;
+        }
+
+        .party.selected {
+            border-color: #28a745;
+            background: linear-gradient(145deg, #d4edda, #c3e6cb);
+        }
+
+        .party-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .party-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .party-info h3 {
+            color: #333;
+            font-size: 1.4em;
+            margin-bottom: 5px;
+        }
+
+        .party-info p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .party-leader {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+
+        .party-leader strong {
+            color: #333;
+        }
+
+        .vote-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .vote-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .vote-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .admin-btn {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+        }
+
+        .election-status {
+            background: linear-gradient(145deg, #e3f2fd, #bbdefb);
+            border: 2px solid #2196f3;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .election-status.voting-open {
+            background: linear-gradient(145deg, #e8f5e8, #c8e6c9);
+            border-color: #4caf50;
+        }
+
+        .election-status.voting-closed {
+            background: linear-gradient(145deg, #ffebee, #ffcdd2);
+            border-color: #f44336;
+        }
+
+        .voting-stats {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .voting-stats h3 {
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .results-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-top: 20px;
+        }
+
+        .results-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 5px solid #007bff;
+        }
+
+        .result-party {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .result-votes {
+            background: #007bff;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            transition: width 0.5s ease;
+        }
+
+        .winner {
+            background: linear-gradient(145deg, #fff3cd, #ffeaa7);
+            border-left-color: #ffc107;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 193, 7, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0); }
+        }
+
+        .status-message {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info {
+            background: #cce7ff;
+            color: #004085;
+            border: 1px solid #b3d7ff;
+        }
+
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .voter-info {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .admin-panel {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            /* Note: The admin panel is intentionally visible here for the admin to use */
+        }
+        
+        .admin-age-panel {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .admin-age-panel h4 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .age-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+
+        .age-table th, .age-table td {
+            padding: 12px 8px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        .age-table th {
+            background-color: #e9ecef;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .age-table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .age-table tbody tr:hover {
+            background-color: #e2e6ea;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            margin-top: 50px;
+            padding: 40px 0 20px 0;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        .footer-section h4 {
+            color: #3498db;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .footer-section p {
+            line-height: 1.6;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        .footer-section a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #3498db;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 30px;
+            padding-top: 20px;
+            text-align: center;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .footer-bottom p {
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .countdown {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #dc3545;
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        .admin-link {
+            color: white;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+        
+        .admin-link:hover {
+            opacity: 1;
+        }
+        
+        .admin-link.active {
+            color: #3498db;
+            text-decoration: underline;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .party {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗳️ Kerala Election Demo 2025</h1>
+            <p>Cast your vote for the next Kerala State Election</p>
+        </div>
+
+        <div class="voter-info">
+            <p>🌐 Your IP: <span id="voterIP">Loading...</span> | 👥 Total Votes Cast: <span id="totalVotes">0</span></p>
+        </div>
+
+        <div class="main-content">
+            <div class="voting-section">
+                <div class="election-status voting-open" id="electionStatus">
+                    <h3>🟢 Voting is Currently OPEN</h3>
+                    <p>Cast your vote before the deadline</p>
+                    <div class="countdown" id="countdown">Voting status loading...</div>
+                </div>
+
+                <div id="statusMessage"></div>
+                
+                <div class="party" data-party="ldf">
+                    <div class="party-header">
+                        <div class="party-logo" style="background: #dc3545;">🚩</div>
+                        <div class="party-info">
+                            <h3>Left Democratic Front (LDF)</h3>
+                            <p>CPI(M) Led Alliance</p>
+                        </div>
+                    </div>
+                    <div class="party-leader">
+                        <strong>Leader:</strong> Pinarayi Vijayan (Chief Minister)
+                    </div>
+                </div>
+
+                <div class="party" data-party="udf">
+                    <div class="party-header">
+                        <div class="party-logo" style="background: #007bff;">🏛️</div>
+                        <div class="party-info">
+                            <h3>United Democratic Front (UDF)</h3>
+                            <p>Congress Led Alliance</p>
+                        </div>
+                    </div>
+                    <div class="party-leader">
+                        <strong>Leader:</strong> V.D. Satheesan (Opposition Leader)
+                    </div>
+                </div>
+
+                <div class="party" data-party="nda">
+                    <div class="party-header">
+                        <div class="party-logo" style="background: #ff8c00;">🪷</div>
+                        <div class="party-info">
+                            <h3>National Democratic Alliance (NDA)</h3>
+                            <p>BJP Led Alliance</p>
+                        </div>
+                    </div>
+                    <div class="party-leader">
+                        <strong>Leader:</strong> K. Surendran (State President)
+                    </div>
+                </div>
+
+                <div class="party" data-party="independent">
+                    <div class="party-header">
+                        <div class="party-logo" style="background: #6c757d;">🗳️</div>
+                        <div class="party-info">
+                            <h3>Independent Candidates</h3>
+                            <p>Various Independent Leaders</p>
+                        </div>
+                    </div>
+                    <div class="party-leader">
+                        <strong>Leader:</strong> Local Independent Candidates
+                    </div>
+                </div>
+
+                <button class="vote-btn" id="castVote" disabled>Loading Election Data...</button>
+
+                <div class="admin-panel">
+                    <h4>🔧 Demo Controls (Admin Only)</h4>
+                    <p>Simulate election phases for demonstration</p>
+                    <button class="admin-btn" id="closeVoting">Close Voting</button>
+                    <button class="admin-btn" id="announceResults">Announce Results</button>
+                    <button class="admin-btn" id="resetElection">Reset Election</button>
+                    
+                    <div class="admin-age-panel" id="adminAgePanel">
+                        <hr style="margin: 20px 0;">
+                        <h4>📊 Age-Based Vote Breakdown</h4>
+                        <div id="ageVoteTableContainer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <div class="voting-stats">
+                    <h3>📊 Voting Information</h3>
+                    <div class="stat-item">
+                        <span>Election Status:</span>
+                        <strong id="statusText">Loading...</strong>
+                    </div>
+                    <div class="stat-item">
+                        <span>Your Voting Status:</span>
+                        <strong id="userStatus">Loading...</strong>
+                    </div>
+                    <div class="stat-item">
+                        <span>Total Participants:</span>
+                        <strong id="totalParticipants">0</strong>
+                    </div>
+                    <div class="stat-item">
+                        <span>Results Available:</span>
+                        <strong id="resultsStatus">Loading...</strong>
+                    </div>
+                </div>
+
+                <div class="election-status">
+                    <h4>ℹ️ Important Notice</h4>
+                    <p>This demo uses a shared external database. Your vote is registered globally.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-section hidden" id="resultsSection">
+            <h2>🏆 Official Election Results</h2>
+            <div class="election-status voting-closed">
+                <h3>🔴 Voting has ENDED</h3>
+                <p>Results are now officially announced</p>
+            </div>
+            <div id="resultsList"></div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Demo Election System</h4>
+                    <p>Educational demonstration of electronic voting process</p>
+                </div>
+                <div class="footer-section">
+                    <h4>About This Demo</h4>
+                    <p>📚 Learning Tool</p>
+                    <p>🎯 Educational Purpose Only</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Features</h4>
+                    <p><a href="#">IP-based Voting</a></p>
+                    <p><a href="#">Real-time Results</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Demo Election Platform. This is a demonstration only.</p>
+                <span id="admin-trigger" class="admin-link">System Info</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        class ElectionApp {
+            constructor() {
+                this.votedata = []; 
+                this.selectedParty = null;
+                this.userIP = null;
+                this.electionStatus = 'loading';
+                this.countdownTimer = null;
+                
+                this.parties = {
+                    'ldf': 'Left Democratic Front (LDF)',
+                    'udf': 'United Democratic Front (UDF)',
+                    'nda': 'National Democratic Alliance (NDA)',
+                    'independent': 'Independent Candidates'
+                };
+
+                this.init();
+            }
+
+            init() {
+                this.getUserIP();
+                this.setupEventListeners();
+                this.loadInitialData(); // NEW: Asynchronously load data
+            }
+
+            // --- ASYNCHRONOUS DATA HANDLING (REQUIRED FOR GITHUB PAGES) ---
+
+            async loadInitialData() {
+                this.showMessage('Connecting to database...', 'info');
+                
+                try {
+                    const externalData = await this.loadExternalData();
+                    this.votedata = externalData.votedata || [];
+                    this.electionStatus = externalData.electionStatus || 'open';
+                    
+                    this.showMessage('Election data loaded successfully.', 'success');
+                } catch (error) {
+                    console.error("Database connection failed:", error);
+                    this.showMessage('ERROR: Could not connect to external database. Using local data only.', 'error');
+                }
+                
+                // Finalize UI regardless of external connection success
+                this.updateUI();
+                this.checkVotingStatus();
+                this.startCountdown();
+            }
+
+            /**
+             * 🛑 CRITICAL: This is the function you MUST modify to work with your database.
+             * It should fetch the entire state (votedata, electionStatus) from your backend.
+             * * @returns {Promise<Object>} An object containing {votedata: [], electionStatus: string}
+             */
+            async loadExternalData() {
+                // --- FALLBACK (KEEP THIS FOR LOCAL TESTING) ---
+                // For GitHub Pages: Replace the following 3 lines with your database's GET request
+                await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network delay
+                const saved = JSON.parse(sessionStorage.getItem('electionData') || '{"votedata": [], "electionStatus": "open"}');
+                return saved;
+                // --- END FALLBACK ---
+                
+                /* // EXAMPLE FIREBASE/SUPABASE GET REQUEST STRUCTURE:
+                const response = await fetch('YOUR_API_ENDPOINT/state');
+                if (!response.ok) throw new Error('Failed to fetch data');
+                return await response.json();
+                */
+            }
+
+            /**
+             * 🛑 CRITICAL: This is the function you MUST modify to work with your database.
+             * It should send the entire state object to your backend to save it globally.
+             * * @param {Object} data The complete state object to save
+             */
+            async saveExternalData(data) {
+                // --- FALLBACK (KEEP THIS FOR LOCAL TESTING) ---
+                // For GitHub Pages: Replace the following 1 line with your database's POST/PUT request
+                sessionStorage.setItem('electionData', JSON.stringify(data));
+                // --- END FALLBACK ---
+
+                /*
+                // EXAMPLE FIREBASE/SUPABASE POST/PUT REQUEST STRUCTURE:
+                await fetch('YOUR_API_ENDPOINT/state', {
+                    method: 'PUT', // Use PUT to overwrite the state
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                */
+            }
+
+            // --- CORE APP LOGIC (UPDATED FOR ASYNC) ---
+
+            saveData() {
+                const data = {
+                    votedata: this.votedata,
+                    electionStatus: this.electionStatus,
+                    simulatedIP: this.userIP
+                };
+                // Use the new async saver without waiting for it to finish
+                this.saveExternalData(data); 
+            }
+
+            getUserIP() {
+                // Keep simulated IP for the demo, but a real system would need a real identifier
+                const saved = JSON.parse(sessionStorage.getItem('electionData') || '{}');
+                const ip = saved.simulatedIP || Math.floor(Math.random() * 255) + '.' + 
+                          Math.floor(Math.random() * 255) + '.' + 
+                          Math.floor(Math.random() * 255) + '.' + 
+                          Math.floor(Math.random() * 255);
+                
+                this.userIP = ip;
+                
+                // Ensure the IP is saved for future sessions
+                const data = { ...saved, simulatedIP: ip };
+                sessionStorage.setItem('electionData', JSON.stringify(data));
+                
+                document.getElementById('voterIP').textContent = this.userIP;
+            }
+
+            setupEventListeners() {
+                const parties = document.querySelectorAll('.party');
+                parties.forEach(party => {
+                    party.addEventListener('click', () => {
+                        if (this.electionStatus === 'open') {
+                            this.selectParty(party.dataset.party);
+                        }
+                    });
+                });
+
+                document.getElementById('castVote').addEventListener('click', async () => {
+                    await this.castVote();
+                });
+
+                document.getElementById('closeVoting').addEventListener('click', () => {
+                    this.closeVoting();
+                });
+
+                document.getElementById('announceResults').addEventListener('click', () => {
+                    this.announceResults();
+                });
+
+                document.getElementById('resetElection').addEventListener('click', () => {
+                    this.resetElection();
+                });
+                
+                this.setupAdminTrigger();
+            }
+
+            setupAdminTrigger() {
+                let clickCount = 0;
+                const triggerElement = document.getElementById('admin-trigger');
+
+                triggerElement.addEventListener('click', () => {
+                    clickCount++;
+                    if (clickCount >= 5) {
+                        const adminLink = document.createElement('a');
+                        adminLink.href = '#'; // Admin panel is now embedded in the main page
+                        adminLink.textContent = 'Admin Panel';
+                        adminLink.className = 'admin-link active';
+                        
+                        // Replace the span with the new a tag
+                        triggerElement.parentNode.replaceChild(adminLink, triggerElement);
+                        
+                        // Show the embedded admin panel
+                        document.querySelector('.admin-panel').style.display = 'block';
+                    }
+                });
+            }
+
+            selectParty(partyId) {
+                if (this.hasUserVoted() || this.electionStatus !== 'open') return;
+
+                document.querySelectorAll('.party').forEach(p => p.classList.remove('selected'));
+                document.querySelector(`[data-party="${partyId}"]`).classList.add('selected');
+                
+                this.selectedParty = partyId;
+                
+                const voteBtn = document.getElementById('castVote');
+                voteBtn.textContent = `Cast Vote for ${this.parties[partyId]}`;
+                voteBtn.disabled = false;
+            }
+
+            hasUserVoted() {
+                // Checks the global vote history (votedata) for the current user's IP
+                return this.votedata.some(vote => vote.ip === this.userIP);
+            }
+
+            async castVote() {
+                if (!this.selectedParty) {
+                    this.showMessage('Please select a party first!', 'error');
+                    return;
+                }
+
+                if (this.hasUserVoted()) {
+                    this.showMessage('You have already voted from this IP!', 'error');
+                    return;
+                }
+
+                if (this.electionStatus !== 'open') {
+                    this.showMessage('Voting is currently closed!', 'error');
+                    return;
+                }
+
+                this.showMessage('Casting your vote...', 'info');
+                
+                // Add vote to the local data set
+                this.votedata.push({
+                    ip: this.userIP,
+                    party: this.selectedParty,
+                    age: 18 // Placeholder for age
+                });
+
+                // Update the external database and local UI
+                await this.saveData(); 
+                
+                this.showMessage(`Vote cast successfully for ${this.parties[this.selectedParty]}!`, 'success');
+                this.updateUI();
+            }
+
+            async closeVoting() {
+                this.electionStatus = 'closed';
+                await this.saveData();
+                this.showMessage('Voting has been closed by election officials.', 'warning');
+                this.updateUI();
+            }
+
+            async announceResults() {
+                this.electionStatus = 'results';
+                await this.saveData();
+                this.showMessage('Election results have been officially announced!', 'info');
+                this.updateUI();
+                this.showResults();
+            }
+
+            async resetElection() {
+                if (confirm('Are you sure you want to reset the entire election? This will clear all votes globally.')) {
+                    // Reset local state
+                    this.votedata = [];
+                    this.electionStatus = 'open';
+                    this.selectedParty = null;
+                    
+                    // Clear local browser storage for a clean start
+                    sessionStorage.removeItem('electionData'); 
+                    
+                    // Reset remote database state
+                    await this.saveData(); 
+
+                    this.showMessage('Election has been reset successfully!', 'success');
+                    this.updateUI();
+                    
+                    document.getElementById('resultsSection').classList.add('hidden');
+                    
+                    document.querySelectorAll('.party').forEach(party => {
+                        party.classList.remove('selected');
+                        party.style.opacity = '1';
+                        party.style.cursor = 'pointer';
+                    });
+                    
+                    const voteBtn = document.getElementById('castVote');
+                    voteBtn.textContent = 'Select a Party to Vote';
+                    voteBtn.disabled = true;
+                }
+            }
+
+            updateUI() {
+                const totalVotes = this.votedata.length;
+                document.getElementById('totalVotes').textContent = totalVotes;
+                document.getElementById('totalParticipants').textContent = new Set(this.votedata.map(v => v.ip)).size;
+
+                const statusEl = document.getElementById('electionStatus');
+                const statusText = document.getElementById('statusText');
+                const userStatus = document.getElementById('userStatus');
+                const resultsStatus = document.getElementById('resultsStatus');
+                const voteBtn = document.getElementById('castVote');
+
+                voteBtn.textContent = 'Select a Party to Vote';
+                voteBtn.disabled = true;
+
+                if (this.electionStatus === 'open') {
+                    statusEl.className = 'election-status voting-open';
+                    statusEl.innerHTML = '<h3>🟢 Voting is Currently OPEN</h3><p>Cast your vote before the deadline</p><div class="countdown" id="countdown">Voting closes in: 24:00:00</div>';
+                    statusText.textContent = 'Voting Open';
+                    resultsStatus.textContent = 'After Voting Ends';
+                    this.startCountdown();
+                    if (!this.hasUserVoted()) {
+                         voteBtn.textContent = 'Select a Party to Vote';
+                         voteBtn.disabled = true;
+                    }
+                } else if (this.electionStatus === 'closed') {
+                    statusEl.className = 'election-status voting-closed';
+                    statusEl.innerHTML = '<h3>🔴 Voting is CLOSED</h3><p>Waiting for official results announcement</p>';
+                    statusText.textContent = 'Voting Closed';
+                    resultsStatus.textContent = 'Pending Announcement';
+                    voteBtn.textContent = 'Voting Closed';
+                } else if (this.electionStatus === 'results') {
+                    statusEl.className = 'election-status voting-closed';
+                    statusEl.innerHTML = '<h3>📊 Results ANNOUNCED</h3><p>Official election results are now available</p>';
+                    statusText.textContent = 'Results Announced';
+                    resultsStatus.textContent = 'Available Now';
+                    voteBtn.textContent = 'Election Ended';
+                    this.showResults();
+                }
+
+                if (this.hasUserVoted()) {
+                    userStatus.textContent = 'Voted';
+                    voteBtn.textContent = 'Already Voted';
+                    voteBtn.disabled = true;
+                    document.querySelectorAll('.party').forEach(party => {
+                        party.style.opacity = '0.6';
+                        party.style.cursor = 'not-allowed';
+                    });
+                } else {
+                    userStatus.textContent = 'Not Voted';
+                    document.querySelectorAll('.party').forEach(party => {
+                        party.style.opacity = '1';
+                        party.style.cursor = 'pointer';
+                    });
+                }
+            }
+
+            startCountdown() {
+                if (this.electionStatus !== 'open') return;
+
+                const countdownEl = document.getElementById('countdown');
+                if (!countdownEl) return;
+
+                if (this.countdownTimer) {
+                    clearInterval(this.countdownTimer);
+                }
+
+                let timeLeft = 24 * 60 * 60; // 24 hours in seconds (Placeholder)
+
+                this.countdownTimer = setInterval(() => {
+                    const hours = Math.floor(timeLeft / 3600);
+                    const minutes = Math.floor((timeLeft % 3600) / 60);
+                    const seconds = timeLeft % 60;
+
+                    if (countdownEl) {
+                        countdownEl.textContent = `Voting closes in: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    }
+
+                    timeLeft--;
+
+                    if (timeLeft < 0) {
+                        clearInterval(this.countdownTimer);
+                        if (countdownEl) {
+                            countdownEl.textContent = 'Voting has ended!';
+                            this.closeVoting(); // Automatically close voting when timer hits 0
+                        }
+                    }
+                }, 1000);
+            }
+
+            showResults() {
+                const resultsSection = document.getElementById('resultsSection');
+                const resultsList = document.getElementById('resultsList');
+                
+                resultsSection.classList.remove('hidden');
+
+                const totalVotes = this.votedata.length;
+                const voteCounts = Object.values(this.parties).reduce((acc, party) => ({ ...acc, [party]: 0 }), {});
+                this.votedata.forEach(vote => {
+                    const partyName = this.parties[vote.party];
+                    if (partyName) {
+                        voteCounts[partyName]++;
+                    }
+                });
+
+                const sortedParties = Object.entries(voteCounts).sort(([,a], [,b]) => b - a);
+                
+                let resultsHTML = '';
+                sortedParties.forEach(([partyName, voteCount], index) => {
+                    const percentage = totalVotes > 0 ? (voteCount / totalVotes * 100).toFixed(1) : 0;
+                    const isWinner = index === 0 && voteCount > 0;
+                    
+                    resultsHTML += `
+                        <div class="result-item ${isWinner ? 'winner' : ''}">
+                            <div>
+                                <div class="result-party">
+                                    ${isWinner ? '👑 ' : ''}${partyName}
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${percentage}%"></div>
+                                </div>
+                            </div>
+                            <div class="result-votes">${voteCount} (${percentage}%)</div>
+                        </div>
+                    `;
+                });
+
+                if (totalVotes === 0) {
+                    resultsHTML = '<div class="result-item"><div class="result-party">No votes were cast</div></div>';
+                }
+
+                resultsList.innerHTML = resultsHTML;
+
+                // Scroll to results
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            showMessage(message, type) {
+                const messageDiv = document.getElementById('statusMessage');
+                messageDiv.innerHTML = `<div class="status-message ${type}">${message}</div>`;
+                
+                setTimeout(() => {
+                    messageDiv.innerHTML = '';
+                }, 5000);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            new ElectionApp();
+        });
+    </script>
+</body>
+</html>
